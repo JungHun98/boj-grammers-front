@@ -9,6 +9,7 @@ import { useExampleInput } from '@/store/store';
 import { useCode } from '@/context/CodeContext';
 import { css } from '@emotion/css';
 import openSnackBar from '@/utils/openSnackBar';
+import snackbarMessage from '@/utils/consts/snackbarMessage';
 
 const style = css`
   background-color: #2d5a27;
@@ -55,23 +56,27 @@ function CodeRunButton() {
   const updateIsRunning = useUpdateIsRunning();
 
   const handleClickButton = () => {
+    const noSocket = socket === null;
+    const isDangerousCode = containsDangerousCode(code[lang]);
+    const isEmptyCode = code[lang].trim().length === 0;
+
     if (isRunning) {
-      openSnackBar('코드 실행이 끝날 때까지 기다려주세요.');
+      openSnackBar(snackbarMessage['isRunning']);
       return;
     }
 
-    if (socket === null) {
-      openSnackBar('서버와 연결중에요. 잠시 기다려주세요.');
+    if (noSocket) {
+      openSnackBar(snackbarMessage['noSocket']);
       return;
     }
 
-    if (containsDangerousCode(code[lang])) {
-      openSnackBar('위험한 코드가 작성되어 있어요.');
+    if (isDangerousCode) {
+      openSnackBar(snackbarMessage['isDangerousCode']);
       return;
     }
 
-    if (code[lang].trim().length === 0) {
-      openSnackBar('실행할 코드가 없어요.');
+    if (isEmptyCode) {
+      openSnackBar(snackbarMessage['isEmptyCode']);
       return;
     }
 

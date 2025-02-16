@@ -7,6 +7,7 @@ import {
 import { useProblemActions } from '@/store/store';
 import { useIsRunning } from '@/store/codeStroe';
 import openSnackBar from '@/utils/openSnackBar';
+import snackbarMessage from '@/utils/consts/snackbarMessage';
 
 function ProblemSearch() {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -19,9 +20,10 @@ function ProblemSearch() {
     if (inputRef.current === null) return;
 
     const inputValue = inputRef.current.value;
+    const isContainNan = isNaN(+inputValue) || inputValue.trim().length === 0;
 
-    if (isNaN(+inputValue) || inputValue.trim().length === 0) {
-      openSnackBar('검색창에 숫자만 입력해주세요.');
+    if (isContainNan) {
+      openSnackBar(snackbarMessage['isContainNaN']);
       return;
     }
 
@@ -32,9 +34,10 @@ function ProblemSearch() {
     e.preventDefault();
 
     if (isRunning) {
-      openSnackBar('코드 실행이 끝날 때까지 기다려주세요.');
+      openSnackBar(snackbarMessage['isRunning']);
       return;
     }
+
     handleSearch();
   };
 
