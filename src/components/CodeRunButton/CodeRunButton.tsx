@@ -55,6 +55,11 @@ function CodeRunButton() {
   const updateIsRunning = useUpdateIsRunning();
 
   const handleClickButton = () => {
+    if (isRunning) {
+      openSnackBar('코드 실행이 끝날 때까지 기다려주세요.');
+      return;
+    }
+
     if (socket === null) {
       openSnackBar('서버와 연결중에요. 잠시 기다려주세요.');
       return;
@@ -75,7 +80,7 @@ function CodeRunButton() {
   };
 
   return (
-    <Button onClick={handleClickButton} className={style} disabled={isRunning}>
+    <Button onClick={handleClickButton} className={style}>
       코드 실행
     </Button>
   );
