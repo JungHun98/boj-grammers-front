@@ -52,26 +52,40 @@ const NetwortLodingIcon = () => {
   );
 };
 
+const createResultArray = (
+  inputArr: string[],
+  outputArr: string[],
+  excuteResultArr: string[] | null[],
+): ResultInfo[] => {
+  const resultArray: ResultInfo[] = Array(excuteResultArr.length);
+
+  for (let i = 0; i < excuteResultArr.length; i++) {
+    const input = inputArr[i];
+    const output = outputArr[i];
+    const result = excuteResultArr[i] === null ? null : excuteResultArr[i];
+
+    resultArray[i] = { input, output, result };
+  }
+
+  return resultArray;
+};
+
 function ExcutionResult() {
-  const socket = useSocket(import.meta.env.VITE_APP_URL);
   const [error, setError] = useState<string | null>(null);
   const [excuteResult, setExcuteResult] = useState<string[] | null[]>([]);
   const [isSocketConnect, setIsSocketConnect] = useState<boolean>(true);
 
+  const socket = useSocket(import.meta.env.VITE_APP_URL);
   const exampleInput = useExampleInput();
   const exampleOutput = useExampleOutput();
   const updateRunningState = useUpdateIsRunning();
 
-  const makeRsultTable = useMemo(() => {
-    const resultArray: ResultInfo[] = Array(excuteResult.length);
-
-    for (let i = 0; i < excuteResult.length; i++) {
-      const input = exampleInput[i];
-      const output = exampleOutput[i];
-      const result = excuteResult[i] === null ? null : excuteResult[i];
-
-      resultArray[i] = { input, output, result };
-    }
+  const resultTables = useMemo(() => {
+    const resultArray = createResultArray(
+      exampleInput,
+      exampleOutput,
+      excuteResult,
+    );
 
     return resultArray.map((info, index) => (
       <ResultTable key={index} {...info} />
@@ -130,7 +144,7 @@ function ExcutionResult() {
       ) : error !== null ? (
         <ErrorPre>{error}</ErrorPre>
       ) : (
-        makeRsultTable
+        resultTables
       )}
     </Wrapper>
   );
