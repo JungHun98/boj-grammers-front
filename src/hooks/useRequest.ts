@@ -23,12 +23,27 @@ function useRequest<I, T>(
   const [_error, _setError] = useState<Error>();
 
   useEffect(() => {
+    let isMounted = true;
+
     _setStatus('pending');
-    _setPromise(
-      request(arg)
-        .then((response) => resolvePromise(response.data))
-        .catch((error) => rejectPromise(error)),
-    );
+
+    const promise = request(arg)
+      .then((response) => {
+        if (isMounted) {
+          resolvePromise(response.data);
+        }
+      })
+      .catch((error) => {
+        if (isMounted) {
+          rejectPromise(error);
+        }
+      });
+
+    _setPromise(promise);
+
+    return () => {
+      isMounted = false;
+    };
   }, [arg]);
 
   if (_status === 'pending' && _promise) {
