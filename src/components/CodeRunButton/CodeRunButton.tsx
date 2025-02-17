@@ -21,6 +21,8 @@ const style = css`
   }
 `;
 
+const MAX_BYTE_SIZE = 524288;
+
 const containsDangerousCode = (inputString: string) => {
   // 위험한 패턴 목록
   const forbiddenPatterns = [
@@ -47,6 +49,10 @@ const containsDangerousCode = (inputString: string) => {
   return false; // 안전한 코드
 };
 
+const getStringByteSize = (str: string) => {
+  return new TextEncoder().encode(str).length;
+};
+
 function CodeRunButton() {
   const [isSocketConnect, setIsSocketConnect] = useState<boolean>(true);
   const socket = useSocket(import.meta.env.VITE_APP_URL);
@@ -61,6 +67,7 @@ function CodeRunButton() {
     const noSocket = socket === null;
     const isDangerousCode = containsDangerousCode(code[lang]);
     const isEmptyCode = code[lang].trim().length === 0;
+    const isLongCode = getStringByteSize(code[lang]) > MAX_BYTE_SIZE;
 
     if (isRunning) {
       openSnackBar(snackbarMessage['isRunning']);
@@ -69,6 +76,11 @@ function CodeRunButton() {
 
     if (noSocket || !isSocketConnect) {
       openSnackBar(snackbarMessage['noSocket']);
+      return;
+    }
+
+    if (isLongCode) {
+      openSnackBar(snackbarMessage['isLongCode']);
       return;
     }
 

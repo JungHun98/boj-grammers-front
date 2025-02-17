@@ -4,6 +4,7 @@ const messages = {
   isDangerousCode: '위험한 코드가 작성되어 있어요.',
   isEmptyCode: '실행할 코드가 없어요.',
   isContainNaN: '검색창에 정확한 숫자를 입력해주세요.',
+  isLongCode: '코드가 너무 길어요.',
 };
 
 export default messages;
