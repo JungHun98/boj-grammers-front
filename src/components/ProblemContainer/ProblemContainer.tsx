@@ -49,8 +49,13 @@ function ProblemContainer({ problemNumber }: ProblemContainerProps) {
 
   useEffect(() => {
     if (data?.examples?.length !== undefined) {
-      const exampleInput = data.examples.map(({ input }) => input);
-      const exampleOutput = data.examples.map(({ output }) => output);
+      const exampleInput: string[] = [];
+      const exampleOutput: string[] = [];
+
+      data.examples.forEach(({ input, output }) => {
+        exampleInput.push(input);
+        exampleOutput.push(output);
+      });
 
       updateExampleInput(exampleInput);
       updateExampleOutput(exampleOutput);

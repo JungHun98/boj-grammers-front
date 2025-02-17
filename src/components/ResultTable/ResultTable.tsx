@@ -9,12 +9,8 @@ interface ResultTableProps {
 
 function ResultTable({ input, output, result }: ResultTableProps) {
   const compareResult = () => {
-    let outputArr = output.split('\n');
-    let resultArr = result!.split('\n');
-
-    while (resultArr[resultArr.length - 1] === '') {
-      resultArr.pop();
-    }
+    let outputArr = output.split('\n').filter((elem) => elem !== '');
+    let resultArr = result!.split('\n').filter((elem) => elem !== '');
 
     outputArr = outputArr.map((elem) => elem.trim());
     resultArr = resultArr.map((elem) => elem.trim());
