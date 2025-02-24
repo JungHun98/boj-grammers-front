@@ -7,6 +7,7 @@ import TestCaseModal from '@/components/TestCaseModal';
 import AdditionalModal from '@/components/common/AdditionalModal';
 import AdditionalTestCaseModal from '@/components/AdditionalTestCaseModal';
 import Snackbar from './components/common/Snackbar';
+import GlobalErrorBoundary from './components/common/GlobalErrorBoundary/GlobalErrorBoundary';
 
 function App() {
   const [isOpen, setIsOpen] = useState(false);
@@ -42,21 +43,23 @@ function App() {
 
   return (
     <>
-      <Problem onOpen={handleModalOpen} />
-      <Modal open={isOpen} onClose={handleModalClose}>
-        <TestCaseModal
-          onClose={handleModalClose}
-          onOpen={handleAdditionalModalOpen}
-        />
-      </Modal>
-      <AdditionalModal
-        open={isAdditionalOpen}
-        onClose={handleAdditionalModalClose}
-      >
-        <AdditionalTestCaseModal onClose={handleAdditionalModalClose} />
-      </AdditionalModal>
-      <Snackbar />
-      <Analytics />
+      <GlobalErrorBoundary>
+        <Problem onOpen={handleModalOpen} />
+        <Modal open={isOpen} onClose={handleModalClose}>
+          <TestCaseModal
+            onClose={handleModalClose}
+            onOpen={handleAdditionalModalOpen}
+          />
+        </Modal>
+        <AdditionalModal
+          open={isAdditionalOpen}
+          onClose={handleAdditionalModalClose}
+        >
+          <AdditionalTestCaseModal onClose={handleAdditionalModalClose} />
+        </AdditionalModal>
+        <Snackbar />
+        <Analytics />
+      </GlobalErrorBoundary>
     </>
   );
 }
