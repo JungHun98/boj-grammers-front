@@ -17,7 +17,7 @@ class GlobalErrorBoundary extends Component<
 > {
   constructor(props: ErrorBoundaryProps) {
     super(props);
-    this.state = { hasError: false, message: 'null' };
+    this.state = { hasError: false, message: null };
   }
 
   componentDidCatch(error: Error) {
