@@ -10,7 +10,6 @@ import { useCode } from '@/context/CodeContext';
 import { css } from '@emotion/css';
 import openSnackBar from '@/utils/openSnackBar';
 import snackbarMessage from '@/utils/consts/snackbarMessage';
-import { useEffect, useState } from 'react';
 
 const style = css`
   background-color: #2d5a27;
@@ -54,8 +53,7 @@ const getStringByteSize = (str: string) => {
 };
 
 function CodeRunButton() {
-  const [isSocketConnect, setIsSocketConnect] = useState<boolean>(true);
-  const socket = useSocket(import.meta.env.VITE_APP_URL);
+  const [socket, isSocketConnect] = useSocket();
 
   const lang = useLanguage();
   const code = useCode();
@@ -97,18 +95,6 @@ function CodeRunButton() {
     updateIsRunning(true);
     socket.emit('codeRun', { code: code[lang], lang, input });
   };
-
-  useEffect(() => {
-    if (socket !== null) {
-      socket.on('connect', () => {
-        setIsSocketConnect(true);
-      });
-
-      socket.on('disconnect', () => {
-        setIsSocketConnect(false);
-      });
-    }
-  }, []);
 
   return (
     <Button onClick={handleClickButton} className={style}>

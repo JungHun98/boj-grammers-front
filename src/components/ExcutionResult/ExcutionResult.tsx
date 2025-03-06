@@ -73,9 +73,8 @@ const createResultArray = (
 function ExcutionResult() {
   const [error, setError] = useState<string | null>(null);
   const [excuteResult, setExcuteResult] = useState<string[] | null[]>([]);
-  const [isSocketConnect, setIsSocketConnect] = useState<boolean>(true);
 
-  const socket = useSocket(import.meta.env.VITE_APP_URL);
+  const [socket, isSocketConnect] = useSocket();
   const exampleInput = useExampleInput();
   const exampleOutput = useExampleOutput();
   const updateRunningState = useUpdateIsRunning();
@@ -121,20 +120,12 @@ function ExcutionResult() {
         setError(data);
         updateRunningState(false);
       });
-
-      socket.on('connect', () => {
-        setIsSocketConnect(true);
-      });
-
-      socket.on('disconnect', () => {
-        setIsSocketConnect(false);
-      });
     }
   }, [socket]);
 
   return (
     <Wrapper>
-      {socket === null || !isSocketConnect ? (
+      {!isSocketConnect ? (
         <NetworkConment>
           {NetwortLodingIcon()} 네트워크 연결중 ...
         </NetworkConment>

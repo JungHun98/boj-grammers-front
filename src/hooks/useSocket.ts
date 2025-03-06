@@ -1,12 +1,12 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { io, Socket } from 'socket.io-client';
 
 let socketInstance: Socket | null = null;
 
-function createSocket(url: string): Socket {
+function createSocket(): Socket {
   if (!socketInstance) {
     try {
-      socketInstance = io(url, {
+      socketInstance = io(import.meta.env.VITE_APP_URL, {
         transports: ['websocket'],
         autoConnect: true,
         reconnection: true,
@@ -15,8 +15,6 @@ function createSocket(url: string): Socket {
       if (socketInstance === null) {
         throw new Error('Socket instance is null');
       }
-
-      socketInstance.on('connect', () => {});
     } catch (error) {
       console.error('Failed to initialize Socket.IO:', error);
       throw new Error('Socket.IO initialization failed');
@@ -26,16 +24,25 @@ function createSocket(url: string): Socket {
   return socketInstance;
 }
 
-function useSocket(url: string): Socket {
+function useSocket(): [Socket, boolean] {
   const socketRef = useRef<Socket | null>(null);
+  const [isConnect, setIsConnect] = useState<boolean>(false);
 
   useEffect(() => {
     if (!socketInstance) {
-      socketRef.current = createSocket(url);
-    }
-  }, [url]);
+      socketRef.current = createSocket();
 
-  return socketInstance as Socket;
+      socketRef.current.on('connect', () => {
+        setIsConnect(true);
+      });
+
+      socketRef.current.on('disconnect', () => {
+        setIsConnect(false);
+      });
+    }
+  }, []);
+
+  return [socketInstance as Socket, isConnect];
 }
 
 export default useSocket;
