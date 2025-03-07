@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useState } from 'react';
 import { ErrorPre, Wrapper, NetworkConment } from './ExcutionResult.styles';
-import useSocket from '@/hooks/useSocket';
 import { useExampleInput, useExampleOutput } from '@/store/store';
 import ResultTable from '@/components/ResultTable';
 import { useUpdateIsRunning } from '@/store/codeStroe';
 import openSnackBar from '@/utils/openSnackBar';
+import { useSocket } from '@/context/SocketContext';
 
 interface ResultInfo {
   input: string;
@@ -74,7 +74,7 @@ function ExcutionResult() {
   const [error, setError] = useState<string | null>(null);
   const [excuteResult, setExcuteResult] = useState<string[] | null[]>([]);
 
-  const [socket, isSocketConnect] = useSocket();
+  const { socket, isSocketConnect } = useSocket();
   const exampleInput = useExampleInput();
   const exampleOutput = useExampleOutput();
   const updateRunningState = useUpdateIsRunning();

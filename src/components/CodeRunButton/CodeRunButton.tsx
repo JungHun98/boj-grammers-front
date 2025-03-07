@@ -1,5 +1,4 @@
 import { Button } from '@/components/common/Button';
-import useSocket from '@/hooks/useSocket';
 import {
   useLanguage,
   useIsRunning,
@@ -10,6 +9,7 @@ import { useCode } from '@/context/CodeContext';
 import { css } from '@emotion/css';
 import openSnackBar from '@/utils/openSnackBar';
 import snackbarMessage from '@/utils/consts/snackbarMessage';
+import { useSocket } from '@/context/SocketContext';
 
 const style = css`
   background-color: #2d5a27;
@@ -53,13 +53,12 @@ const getStringByteSize = (str: string) => {
 };
 
 function CodeRunButton() {
-  const [socket, isSocketConnect] = useSocket();
-
   const lang = useLanguage();
   const code = useCode();
   const input = useExampleInput();
   const isRunning = useIsRunning();
   const updateIsRunning = useUpdateIsRunning();
+  const { socket, isSocketConnect } = useSocket();
 
   const handleClickButton = () => {
     const noSocket = socket === null;
