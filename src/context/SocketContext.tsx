@@ -44,7 +44,7 @@ export function SocketProvider({ children }: { children: ReactNode }) {
     if (socketInstance === null) {
       socketInstance = createSocket();
       setSocket(socketInstance);
-      setIsConnected(true);
+      setIsConnected(socketInstance.connected);
 
       socketInstance?.on('connect', () => {
         setIsConnected(true);
