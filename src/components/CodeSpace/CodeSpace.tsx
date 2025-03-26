@@ -23,6 +23,10 @@ function CodeSpace() {
         theme={copilot}
         height="100%"
         extensions={[loadLanguage(lang)!]}
+        basicSetup={{
+          foldGutter: false,
+          tabSize: 4,
+        }}
       />
     </Wrapper>
   );

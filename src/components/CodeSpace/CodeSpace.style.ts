@@ -9,7 +9,7 @@ export const Wrapper = styled('div')`
 
   & .cm-editor * {
     font-family: Menlo, Monaco, 'Source Code Pro', consolas, monospace;
-    font-size: 18px;
+    font-size: 16px;
   }
 
   & .cm-theme * {
