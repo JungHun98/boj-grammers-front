@@ -3,7 +3,6 @@ import MainContent from '@/components/MainContent';
 import ButtonSection from '@/components/ButtonSection';
 import styled from '@emotion/styled';
 import { CodeProvider } from '@/context/CodeContext';
-import { SocketProvider } from '@/context/SocketContext';
 
 interface ProblemProps {
   onOpen: () => void;
@@ -21,13 +20,11 @@ const Wrapper = styled('div')`
 const Problem = ({ onOpen }: ProblemProps) => {
   return (
     <Wrapper>
-      <SocketProvider>
-        <Header />
-        <CodeProvider>
-          <MainContent />
-          <ButtonSection onOpen={onOpen} />
-        </CodeProvider>
-      </SocketProvider>
+      <Header />
+      <CodeProvider>
+        <MainContent />
+        <ButtonSection onOpen={onOpen} />
+      </CodeProvider>
     </Wrapper>
   );
 };

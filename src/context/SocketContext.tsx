@@ -53,6 +53,11 @@ export function SocketProvider({ children }: { children: ReactNode }) {
       socketInstance?.on('disconnect', () => {
         setIsConnected(false);
       });
+
+      return () => {
+        if (socketInstance === null) return;
+        socketInstance.disconnect();
+      };
     }
   }, []);
 

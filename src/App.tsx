@@ -8,6 +8,7 @@ import AdditionalModal from '@/components/common/AdditionalModal';
 import AdditionalTestCaseModal from '@/components/AdditionalTestCaseModal';
 import Snackbar from './components/common/Snackbar';
 import GlobalErrorBoundary from './components/common/GlobalErrorBoundary/GlobalErrorBoundary';
+import { SocketProvider } from './context/SocketContext';
 
 function App() {
   const [isOpen, setIsOpen] = useState(false);
@@ -44,7 +45,9 @@ function App() {
   return (
     <>
       <GlobalErrorBoundary>
-        <Problem onOpen={handleModalOpen} />
+        <SocketProvider>
+          <Problem onOpen={handleModalOpen} />
+        </SocketProvider>
         <Modal open={isOpen} onClose={handleModalClose}>
           <TestCaseModal
             onClose={handleModalClose}
